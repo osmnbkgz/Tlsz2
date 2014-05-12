@@ -1,0 +1,956 @@
++using System;
+ +using System.Linq;
+ +using System.Text;
+ +using System.Data;
+ +using System.Media;
+ +using System.Drawing;
+ +using System.Threading;
+ +using System.Diagnostics;
+ +using System.Windows.Forms;
+ +using System.ComponentModel;
+ +using System.Collections.Generic;
+ +using System.Runtime.InteropServices;
+ +
+ +namespace WindowsFormsApplication1
+ +{
+ +    public partial class Form1 : Form
+ +    {
+ +        [DllImport("winmm.dll", EntryPoint = "mciSendStringA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+ +        private static extern int mciSendString(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
+ +
+ +        public Form1()
+ +        {
+ +            InitializeComponent();
+ +        }
+ +
+ +        Stopwatch stopWatchT1 = new Stopwatch();
+ +        Stopwatch stopWatchT2 = new Stopwatch();
+ +        Stopwatch stopWatchT3 = new Stopwatch();
+ +        Stopwatch stopWatchT4 = new Stopwatch();
+ +        Stopwatch stopWatchT1Alt = new Stopwatch();
+ +        Stopwatch stopWatchT2Alt = new Stopwatch();
+ +        Stopwatch stopWatchT3Alt = new Stopwatch();
+ +        Stopwatch stopWatchT4Alt = new Stopwatch();
+ +
+ +        long durationT1Rec = 0;
+ +        long durationT2Rec = 0;
+ +        long durationT3Rec = 0;
+ +        long durationT4Rec = 0;
+ +        long durationT1AltRec = 0;
+ +        long durationT2AltRec = 0;
+ +        long durationT3AltRec = 0;
+ +        long durationT4AltRec = 0;
+ +
+ +        long durationT1Play = 0;
+ +        long durationT2Play = 0;
+ +        long durationT3Play = 0;
+ +        long durationT4Play = 0;
+ +        long durationT1AltPlay = 0;
+ +        long durationT2AltPlay = 0;
+ +        long durationT3AltPlay = 0;
+ +        long durationT4AltPlay = 0;
+ +
+ +        long durationT1Temp = 0;
+ +        long durationT2Temp = 0;
+ +        long durationT3Temp = 0;
+ +        long durationT4Temp = 0;
+ +
+ +        int timeT1 = 0;
+ +        int timeT2 = 0;
+ +        int timeT3 = 0;
+ +        int timeT4 = 0;
+ +        int timeT1Alt = 0;
+ +        int timeT2Alt = 0;
+ +        int timeT3Alt = 0;
+ +        int timeT4Alt = 0;
+ +
+ +
+ +       
+ +        private void KayıtT1_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            mciSendString("open new type waveaudio alias recsound", null, 0, 0);
+ +            mciSendString("record recsound", null, 0, 0);
+ +            stopWatchT1.Reset(); 
+ +            stopWatchT1.Start();
+ +            TextT1.Text = "\r\nKaydediliyor!";
+ +        }
+ +
+ +        private void KayıtT1_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT1.Stop();
+ +            mciSendString("pause recsound", null, 0, 0);
+ +            mciSendString("save recsound " + "T1Kayıt.wav", null, 0, 0);
+ +            mciSendString("close recsound", null, 0, 0);
+ +            System.IO.File.Delete("T1AltTemp.wav");
+ +            System.IO.File.Copy("T1Kayıt.wav", "T1AltTemp.wav");
+ +            durationT1Rec = stopWatchT1.ElapsedMilliseconds;
+ +            durationT1Temp = durationT1Rec;
+ +            TextT1.Text = "";
+ +        }
+ +
+ +        private void KayıtT2_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            mciSendString("open new type waveaudio alias recsound", null, 0, 0);
+ +            mciSendString("record recsound", null, 0, 0);
+ +            stopWatchT2.Reset(); 
+ +            stopWatchT2.Start();
+ +            TextT2.Text = "\r\nKaydediliyor!";
+ +        }
+ +
+ +        private void KayıtT2_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT2.Stop();
+ +            mciSendString("pause recsound", null, 0, 0);
+ +            mciSendString("save recsound " + "T2Kayıt.wav", null, 0, 0);
+ +            mciSendString("close recsound", null, 0, 0);
+ +            System.IO.File.Delete("T2AltTemp.wav");
+ +            System.IO.File.Copy("T2Kayıt.wav", "T2AltTemp.wav");
+ +            durationT2Rec = stopWatchT2.ElapsedMilliseconds;
+ +            TextT2.Text = "";
+ +        }
+ +
+ +        private void KayıtT3_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            mciSendString("open new type waveaudio alias recsound", null, 0, 0);
+ +            mciSendString("record recsound", null, 0, 0);
+ +            stopWatchT3.Reset(); 
+ +            stopWatchT3.Start();
+ +            TextT3.Text = "\r\nKaydediliyor!";
+ +        }
+ +
+ +        private void KayıtT3_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT3.Stop();
+ +            mciSendString("pause recsound", null, 0, 0);
+ +            mciSendString("save recsound " + "T3Kayıt.wav", null, 0, 0);
+ +            mciSendString("close recsound", null, 0, 0);
+ +            System.IO.File.Delete("T3AltTemp.wav");
+ +            System.IO.File.Copy("T3Kayıt.wav", "T3AltTemp.wav");
+ +            durationT3Rec = stopWatchT3.ElapsedMilliseconds;
+ +            TextT3.Text = "";
+ +        }
+ +
+ +        private void KayıtT4_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            mciSendString("open new type waveaudio alias recsound", null, 0, 0);
+ +            mciSendString("record recsound", null, 0, 0);
+ +            stopWatchT4.Reset(); 
+ +            stopWatchT4.Start();
+ +            TextT4.Text = "\r\nKaydediliyor!";
+ +        }
+ +
+ +        private void KayıtT4_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT4.Stop();
+ +            mciSendString("pause recsound", null, 0, 0);
+ +            mciSendString("save recsound " + "T4Kayıt.wav", null, 0, 0);
+ +            mciSendString("close recsound", null, 0, 0);
+ +            System.IO.File.Delete("T4AltTemp.wav");
+ +            System.IO.File.Copy("T4Kayıt.wav", "T4AltTemp.wav");
+ +            durationT4Rec = stopWatchT4.ElapsedMilliseconds;
+ +            TextT4.Text = "";
+ +        }
+ +
+ +        private void KayıtAltT1_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT1Alt.Reset();
+ +            stopWatchT1Alt.Start(); 
+ +            mciSendString("open new type waveaudio alias recsound", null, 0, 0);
+ +            mciSendString("record recsound", null, 0, 0);
+ +            TextAltT1.Text = "\r\nKaydediliyor!";
+ +        }
+ +
+ +        private void KayıtAltT1_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT1Alt.Stop();
+ +            mciSendString("pause recsound", null, 0, 0);
+ +            mciSendString("save recsound " + "T1AltKayıt.wav", null, 0, 0);
+ +            mciSendString("close recsound", null, 0, 0);
+ +            durationT1AltRec = stopWatchT1Alt.ElapsedMilliseconds;
+ +            TextAltT1.Text = "";
+ +            mciSendString("play " + "T1AltKayıt.wav", null, 0, 0);
+ +            TextT1.Visible = false;
+ +            TimerT1.Enabled = true;
+ +            durationT1Play = durationT1AltRec;
+ +        }
+ +
+ +        private void KayıtAltT2_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT2Alt.Reset();
+ +            stopWatchT2Alt.Start(); 
+ +            mciSendString("open new type waveaudio alias recsound", null, 0, 0);
+ +            mciSendString("record recsound", null, 0, 0);
+ +            TextAltT2.Text = "\r\nKaydediliyor!";
+ +        }
+ +
+ +        private void KayıtAltT2_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT2Alt.Stop();
+ +            mciSendString("pause recsound", null, 0, 0);
+ +            mciSendString("save recsound " + "T2AltKayıt.wav", null, 0, 0);
+ +            mciSendString("close recsound", null, 0, 0);
+ +            this.InvokeOnClick(T2AlttanCal, EventArgs.Empty);
+ +            durationT2AltRec = stopWatchT2Alt.ElapsedMilliseconds;
+ +            TextAltT2.Text = "";
+ +            mciSendString("play " + "T2AltKayıt.wav", null, 0, 0);
+ +            TextT2.Visible = false;
+ +            TimerT2.Enabled = true;
+ +            durationT2Play = durationT2AltRec;
+ +        }
+ +
+ +        private void KayıtAltT3_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT3Alt.Reset();
+ +            stopWatchT3Alt.Start();
+ +            mciSendString("open new type waveaudio alias recsound", null, 0, 0);
+ +            mciSendString("record recsound", null, 0, 0);
+ +            TextAltT3.Text = "\r\nKaydediliyor!";
+ +        }
+ +
+ +        private void KayıtAltT3_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT3Alt.Stop();
+ +            mciSendString("pause recsound", null, 0, 0);
+ +            mciSendString("save recsound " + "T3AltKayıt.wav", null, 0, 0);
+ +            mciSendString("close recsound", null, 0, 0);
+ +            durationT3AltRec = stopWatchT3Alt.ElapsedMilliseconds;
+ +            TextAltT3.Text = "";
+ +            mciSendString("play " + "T3AltKayıt.wav", null, 0, 0);
+ +            TextT3.Visible = false;
+ +            TimerT3.Enabled = true;
+ +            durationT3Play = durationT3AltRec;
+ +        }
+ +
+ +        private void KayıtAltT4_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT4Alt.Reset();
+ +            stopWatchT4Alt.Start();
+ +            mciSendString("open new type waveaudio alias recsound", null, 0, 0);
+ +            mciSendString("record recsound", null, 0, 0);
+ +            TextAltT4.Text = "\r\nKaydediliyor!";
+ +        }
+ +
+ +        private void KayıtAltT4_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            stopWatchT4Alt.Stop();
+ +            mciSendString("pause recsound", null, 0, 0);
+ +            mciSendString("save recsound " + "T4AltKayıt.wav", null, 0, 0);
+ +            mciSendString("close recsound", null, 0, 0);
+ +            durationT4AltRec = stopWatchT4Alt.ElapsedMilliseconds;
+ +            TextAltT4.Text = "";
+ +            mciSendString("play " + "T4AltKayıt.wav", null, 0, 0);
+ +            TextT4.Visible = false;
+ +            TimerT4.Enabled = true;
+ +            durationT4Play = durationT4AltRec;
+ +        }
+ +
+ +
+ +
+ +
+ +     
+ +        private void T1to2_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T1Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T1to2.wav");
+ +                System.IO.File.Copy("T1Kayıt.wav", "T1to2.wav");
+ +                this.InvokeOnClick(Cal1to2, EventArgs.Empty);
+ +                durationT2Temp = durationT1Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT1.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T1to2_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT1.Text = "";
+ +        }
+ +       
+ +        private void T1to3_MouseDown_1(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T1Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T1to3.wav");
+ +                System.IO.File.Copy("T1Kayıt.wav", "T1to3.wav");
+ +                this.InvokeOnClick(Cal1to3, EventArgs.Empty);
+ +                durationT3Temp = durationT1Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT1.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T1to3_MouseUp_1(object sender, MouseEventArgs e)
+ +        {
+ +            TextT1.Text = "";
+ +        }
+ +
+ +        private void T1to4_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T1Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T1to4.wav");
+ +                System.IO.File.Copy("T1Kayıt.wav", "T1to4.wav");
+ +                this.InvokeOnClick(Cal1to4, EventArgs.Empty);
+ +                durationT4Play = durationT1Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT1.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T1to4_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT1.Text = "";
+ +        }
+ +
+ +        private void T2to1_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T2Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T2to1.wav");
+ +                System.IO.File.Copy("T2Kayıt.wav", "T2to1.wav");
+ +                this.InvokeOnClick(Cal2to1, EventArgs.Empty);
+ +                durationT1Temp = durationT2Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT2.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T2to1_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT2.Text = "";
+ +        }
+ +      
+ +        private void T2to3_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T2Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T2to3.wav");
+ +                System.IO.File.Copy("T2Kayıt.wav", "T2to3.wav");
+ +                this.InvokeOnClick(Cal2to3, EventArgs.Empty);
+ +                durationT3Temp = durationT2Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT2.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T2to3_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT2.Text = "";
+ +        }
+ +
+ +        private void T2to4_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T2Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T2to4.wav");
+ +                System.IO.File.Copy("T2Kayıt.wav", "T2to4.wav");
+ +                this.InvokeOnClick(Cal2to4, EventArgs.Empty);
+ +                durationT4Play = durationT2Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT2.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T2to4_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT2.Text = "";
+ +        }
+ +
+ +        private void T3to1_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T3Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T3to1.wav");
+ +                System.IO.File.Copy("T3Kayıt.wav", "T3to1.wav");
+ +                this.InvokeOnClick(Cal3to1, EventArgs.Empty);
+ +                durationT1Temp = durationT3Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT3.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T3to1_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT3.Text = "";
+ +        }
+ +
+ +        private void T3to2_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T3Kayıt.wav"))
+ +            { 
+ +                System.IO.File.Delete("T3to2.wav");
+ +                System.IO.File.Copy("T3Kayıt.wav", "T3to2.wav");
+ +                this.InvokeOnClick(Cal3to2, EventArgs.Empty);
+ +                durationT2Temp = durationT3Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT3.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T3to2_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT3.Text = "";
+ +        }
+ +
+ +        private void T3to4_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T3Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T3to4.wav");
+ +                System.IO.File.Copy("T3Kayıt.wav", "T3to4.wav");
+ +                this.InvokeOnClick(Cal3to4, EventArgs.Empty);
+ +                durationT4Play = durationT3Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT3.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T3to4_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT3.Text = "";
+ +        }
+ +
+ +        private void T4to1_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T4Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T4to1.wav");
+ +                System.IO.File.Copy("T4Kayıt.wav", "T4to1.wav");
+ +                this.InvokeOnClick(Cal4to1, EventArgs.Empty);
+ +                durationT1Temp = durationT4Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT4.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T4to1_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT4.Text = "";
+ +        }
+ +
+ +        private void T4to2_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T4Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T4to2.wav");
+ +                System.IO.File.Copy("T4Kayıt.wav", "T4to2.wav");
+ +                this.InvokeOnClick(Cal4to2, EventArgs.Empty);
+ +                durationT2Temp = durationT4Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT4.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T4to2_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT4.Text = "";
+ +        }
+ +
+ +        private void T4to3_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T4Kayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T4to3.wav");
+ +                System.IO.File.Copy("T4Kayıt.wav", "T4to3.wav");
+ +                this.InvokeOnClick(Cal4to3, EventArgs.Empty);
+ +                durationT3Temp = durationT4Rec;
+ +            }
+ +            else
+ +            {
+ +                TextT4.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void T4to3_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT4.Text = "";
+ +        }
+ +       
+ +
+ +
+ +
+ +
+ +        private void Cal1to2_Click(object sender, EventArgs e)
+ +        {
+ +                mciSendString("play " + "T1to2.wav", null, 0, 0);
+ +                System.IO.File.Delete("T2AltTemp.wav");
+ +                System.IO.File.Copy("T1to2.wav", "T2AltTemp.wav");
+ +                TextT2.Visible = false;
+ +                TimerT2.Enabled = true;
+ +                durationT2Play = durationT1Rec;
+ +        }
+ +   
+ +        private void Cal1to3_Click(object sender, EventArgs e)
+ +        {
+ +                mciSendString("play " + "T1to3.wav", null, 0, 0);
+ +                System.IO.File.Delete("T3AltTemp.wav");
+ +                System.IO.File.Copy("T1to3.wav", "T3AltTemp.wav");
+ +                TextT3.Visible = false;
+ +                TimerT3.Enabled = true;
+ +                durationT3Play = durationT1Rec;
+ +        }
+ +
+ +        private void Cal1to4_Click(object sender, EventArgs e)
+ +        {
+ +                mciSendString("play " + "T1to4.wav", null, 0, 0);
+ +                System.IO.File.Delete("T4AltTemp.wav");
+ +                System.IO.File.Copy("T1to4.wav", "T4AltTemp.wav");
+ +                TextT4.Visible = false;
+ +                TimerT4.Enabled = true;
+ +                durationT4Play = durationT1Rec;
+ +        }
+ +
+ +        private void Cal2to1_Click(object sender, EventArgs e)
+ +        {
+ +                mciSendString("play " + "T2to1.wav", null, 0, 0);
+ +                System.IO.File.Delete("T1AltTemp.wav");
+ +                System.IO.File.Copy("T2to1.wav", "T1AltTemp.wav");
+ +                TextT1.Visible = false;
+ +                TimerT1.Enabled = true;
+ +                durationT1Play = durationT2Rec;
+ +        }
+ +
+ +        private void Cal2to3_Click(object sender, EventArgs e)
+ +        {
+ +                mciSendString("play " + "T2to3.wav", null, 0, 0);
+ +                System.IO.File.Delete("T3AltTemp.wav");
+ +                System.IO.File.Copy("T2to3.wav", "T3AltTemp.wav");
+ +                TextT3.Visible = false;
+ +                TimerT3.Enabled = true;
+ +                durationT3Play = durationT2Rec;
+ +        }
+ +
+ +        private void Cal2to4_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T2to4.wav", null, 0, 0);
+ +            System.IO.File.Delete("T4AltTemp.wav");
+ +            System.IO.File.Copy("T2to4.wav", "T4AltTemp.wav");
+ +            TextT4.Visible = false;
+ +            TimerT4.Enabled = true;
+ +            durationT4Play = durationT2Rec;
+ +        }
+ +
+ +        private void Cal3to1_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T3to1.wav", null, 0, 0);
+ +            System.IO.File.Delete("T1AltTemp.wav");
+ +            System.IO.File.Copy("T3to1.wav", "T1AltTemp.wav");
+ +            TextT1.Visible = false;
+ +            TimerT1.Enabled = true;
+ +            durationT1Play = durationT3Rec;
+ +        }
+ +
+ +        private void Cal3to2_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T3to2.wav", null, 0, 0);
+ +            System.IO.File.Delete("T2AltTemp.wav");
+ +            System.IO.File.Copy("T3to2.wav", "T2AltTemp.wav");
+ +            TextT2.Visible = false;
+ +            TimerT2.Enabled = true;
+ +            durationT2Play = durationT3Rec;
+ +        }
+ +
+ +        private void Cal3to4_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T3to4.wav", null, 0, 0);
+ +            System.IO.File.Delete("T4AltTemp.wav");
+ +            System.IO.File.Copy("T3to4.wav", "T4AltTemp.wav");
+ +            TextT4.Visible = false;
+ +            TimerT4.Enabled = true;
+ +            durationT4Play = durationT3Rec;
+ +        }
+ +
+ +        private void Cal4to1_Click(object sender, EventArgs e)
+ +        { 
+ +                mciSendString("play " + "T4to1.wav", null, 0, 0);
+ +                System.IO.File.Delete("T1AltTemp.wav");
+ +                System.IO.File.Copy("T4to1.wav", "T1AltTemp.wav");
+ +                TextT1.Visible = false;
+ +                TimerT1.Enabled = true;
+ +                durationT1Play = durationT4Rec;
+ +        }
+ +
+ +        private void Cal4to2_Click(object sender, EventArgs e)
+ +        {  
+ +                mciSendString("play " + "T4to2.wav", null, 0, 0);
+ +                System.IO.File.Delete("T2AltTemp.wav");
+ +                System.IO.File.Copy("T4to2.wav", "T2AltTemp.wav");
+ +                TextT2.Visible = false;
+ +                TimerT2.Enabled = true;
+ +                durationT2Play = durationT4Rec;
+ +        }
+ +
+ +        private void Cal4to3_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T4to3.wav", null, 0, 0);
+ +            System.IO.File.Delete("T3AltTemp.wav");
+ +            System.IO.File.Copy("T4to3.wav", "T3AltTemp.wav");
+ +            TextT3.Visible = false;
+ +            TimerT3.Enabled = true;
+ +            durationT3Play = durationT4Rec;
+ +        }
+ +
+ +
+ +
+ +
+ +
+ +
+ +        private void OnayT1_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T1AltKayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T1Kayıt.wav");
+ +                System.IO.File.Copy("T1AltKayıt.wav", "T1Kayıt.wav");
+ +                TextT1.Text = "";
+ +                durationT1Rec = durationT1AltRec;
+ +            }
+ +            else
+ +            {
+ +                TextT1.Text = "\r\nGelen Kayıt Yok!";
+ +            } 
+ +        }
+ +
+ +        private void OnayT1_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT1.Text = "";
+ +        }
+ +
+ +        private void OnayT2_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T2AltKayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T2Kayıt.wav");
+ +                System.IO.File.Copy("T2AltKayıt.wav", "T2Kayıt.wav");
+ +                TextT2.Text = "";
+ +                durationT2Rec = durationT2AltRec;
+ +            }
+ +            else
+ +            {
+ +                TextT2.Text = "\r\nGelen Kayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void OnayT2_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT2.Text = "";
+ +        }
+ +
+ +        private void OnayT3_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T3AltKayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T3Kayıt.wav");
+ +                System.IO.File.Copy("T3AltKayıt.wav", "T3Kayıt.wav");
+ +                TextT3.Text = "";
+ +                durationT3Rec = durationT3AltRec;
+ +            }
+ +            else
+ +            {
+ +                TextT3.Text = "\r\nGelen Kayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void OnayT3_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT3.Text = "";
+ +        }
+ +
+ +        private void OnayT4_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T4AltKayıt.wav"))
+ +            {
+ +                System.IO.File.Delete("T4Kayıt.wav");
+ +                System.IO.File.Copy("T4AltKayıt.wav", "T4Kayıt.wav");
+ +                TextT4.Text = "";
+ +                durationT4Rec = durationT4AltRec;
+ +            }
+ +            else
+ +            {
+ +                TextT4.Text = "\r\nGelen Kayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void OnayT4_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT4.Text = "";
+ +        }
+ +      
+ +
+ +       
+ +
+ +
+ +        private void AltT1_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T1AltTemp.wav"))
+ +            {
+ +                System.IO.File.Delete("T1Alt.wav");
+ +                System.IO.File.Copy("T1AltTemp.wav", "T1Alt.wav");
+ +                this.InvokeOnClick(CalAlt1, EventArgs.Empty);
+ +                durationT1AltPlay = durationT1Temp;
+ +            }
+ +            else
+ +            {
+ +                TextT1.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void AltT1_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT1.Text = "";
+ +        }
+ +
+ +        private void AltT2_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T2AltTemp.wav"))
+ +            {
+ +                System.IO.File.Delete("T2Alt.wav");
+ +                System.IO.File.Copy("T2AltTemp.wav", "T2Alt.wav");
+ +                this.InvokeOnClick(CalAlt2, EventArgs.Empty);
+ +                durationT2AltPlay = durationT2Temp;
+ +            }
+ +            else
+ +            {
+ +                TextT2.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void AltT2_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT2.Text = "";
+ +        }
+ +
+ +        private void AltT3_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T3AltTemp.wav"))
+ +            {
+ +                System.IO.File.Delete("T3Alt.wav");
+ +                System.IO.File.Copy("T3AltTemp.wav", "T3Alt.wav");
+ +                this.InvokeOnClick(CalAlt3, EventArgs.Empty);
+ +                durationT3AltPlay = durationT3Temp;
+ +            }
+ +            else
+ +            {
+ +                TextT3.Text = "\r\nKayıt Yok!";
+ +            }
+ +        }
+ +
+ +        private void AltT3_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT3.Text = "";
+ +        }
+ +
+ +        private void AltT4_MouseDown(object sender, MouseEventArgs e)
+ +        {
+ +            if (System.IO.File.Exists("T4AltTemp.wav"))
+ +            {
+ +                System.IO.File.Delete("T4Alt.wav");
+ +                System.IO.File.Copy("T4AltTemp.wav", "T4Alt.wav");
+ +                this.InvokeOnClick(CalAlt4, EventArgs.Empty);
+ +                durationT4AltPlay = durationT4Temp;
+ +            }
+ +            else
+ +            {
+ +                TextT4.Text = "\r\nKayıt Yok!";
+ +            }
+ +
+ +        }
+ +
+ +        private void AltT4_MouseUp(object sender, MouseEventArgs e)
+ +        {
+ +            TextT4.Text = "";
+ +        }
+ +     
+ +
+ +
+ +
+ +
+ +        private void CalAlt1_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T1Alt.wav", null, 0, 0);
+ +            TextAltT1.Visible = false;
+ +            TimerT1Alt.Enabled = true;
+ +            durationT1AltPlay = durationT1Temp;
+ +        }
+ +
+ +        private void CalAlt2_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T2Alt.wav", null, 0, 0);
+ +            TextAltT2.Visible = false;
+ +            TimerT2Alt.Enabled = true;
+ +            durationT2AltPlay = durationT2Temp;
+ +        }
+ +
+ +        private void CalAlt3_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T3Alt.wav", null, 0, 0);
+ +            TextAltT3.Visible = false;
+ +            TimerT3Alt.Enabled = true;
+ +            durationT3AltPlay = durationT3Temp;
+ +        }
+ +
+ +        private void CalAlt4_Click(object sender, EventArgs e)
+ +        {
+ +            mciSendString("play " + "T4Alt.wav", null, 0, 0);
+ +            TextAltT4.Visible = false;
+ +            TimerT4Alt.Enabled = true;
+ +            durationT4AltPlay = durationT4Temp;
+ +        }
+ +
+ +
+ +
+ +      
+ +
+ +        private void TimerT1_Tick(object sender, EventArgs e)
+ +        {
+ +            timeT1 += 100;
+ +            if (durationT1Play < timeT1)
+ +            {
+ +                TextT1.Visible = true;
+ +                TimerT1.Enabled = false;
+ +                timeT1 = 0;
+ +            }
+ +        }
+ +
+ +        private void TimerT2_Tick(object sender, EventArgs e)
+ +        {
+ +            timeT2 += 100;
+ +            if (durationT2Play < timeT2)
+ +            {
+ +                TextT2.Visible = true;
+ +                TimerT2.Enabled = false;
+ +                timeT2 = 0;
+ +            }
+ +        }
+ +
+ +        private void TimerT3_Tick(object sender, EventArgs e)
+ +        {
+ +            timeT3 += 100;
+ +            if (durationT3Play < timeT3)
+ +            {
+ +                TextT3.Visible = true;
+ +                TimerT3.Enabled = false;
+ +                timeT3 = 0;
+ +            }
+ +        }
+ +
+ +        private void TimerT4_Tick(object sender, EventArgs e)
+ +        {
+ +            timeT4 += 100;
+ +            if (durationT4Play < timeT4)
+ +            {
+ +                TextT4.Visible = true;
+ +                TimerT4.Enabled = false;
+ +                timeT4 = 0;
+ +            }
+ +        }
+ +
+ +        private void TimerT1Alt_Tick(object sender, EventArgs e)
+ +        {
+ +            timeT1Alt += 100;
+ +            if (durationT1AltPlay < timeT1Alt)
+ +            {
+ +                TextAltT1.Visible = true;
+ +                TimerT1Alt.Enabled = false;
+ +                timeT1Alt = 0;
+ +            }
+ +        }
+ +
+ +        private void TimerT2Alt_Tick(object sender, EventArgs e)
+ +        {
+ +            timeT2Alt += 100;
+ +            if (durationT2AltPlay < timeT2Alt)
+ +            {
+ +                TextAltT2.Visible = true;
+ +                TimerT2Alt.Enabled = false;
+ +                timeT2Alt = 0;
+ +            }
+ +        }
+ +
+ +        private void TimerT3Alt_Tick(object sender, EventArgs e)
+ +        {
+ +            timeT3Alt += 100;
+ +            if (durationT3AltPlay < timeT3Alt)
+ +            {
+ +                TextAltT3.Visible = true;
+ +                TimerT3Alt.Enabled = false;
+ +                timeT3Alt = 0;
+ +            }
+ +        }
+ +
+ +        private void TimerT4Alt_Tick(object sender, EventArgs e)
+ +        {
+ +            timeT4Alt += 100;
+ +            if (durationT4AltPlay < timeT4Alt)
+ +            {
+ +                TextAltT4.Visible = true;
+ +                TimerT4Alt.Enabled = false;
+ +                timeT4Alt = 0; 
+ +            }
+ +        }
+ +
+ +
+ +
+ +        
+ +        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+ +        {
+ +            System.IO.File.Delete("T1Kayıt.wav");
+ +            System.IO.File.Delete("T2Kayıt.wav");
+ +            System.IO.File.Delete("T3Kayıt.wav");
+ +            System.IO.File.Delete("T4Kayıt.wav");
+ +            System.IO.File.Delete("T1to2.wav");
+ +            System.IO.File.Delete("T1to3.wav");
+ +            System.IO.File.Delete("T1to4.wav");
+ +            System.IO.File.Delete("T2to1.wav");
+ +            System.IO.File.Delete("T2to3.wav");
+ +            System.IO.File.Delete("T2to4.wav");
+ +            System.IO.File.Delete("T3to1.wav");
+ +            System.IO.File.Delete("T3to2.wav");
+ +            System.IO.File.Delete("T3to4.wav");
+ +            System.IO.File.Delete("T4to1.wav");
+ +            System.IO.File.Delete("T4to2.wav");
+ +            System.IO.File.Delete("T4to3.wav");
+ +            System.IO.File.Delete("T1AltKayıt.wav");
+ +            System.IO.File.Delete("T2AltKayıt.wav");
+ +            System.IO.File.Delete("T3AltKayıt.wav");
+ +            System.IO.File.Delete("T4AltKayıt.wav");
+ +            System.IO.File.Delete("T1Alt.wav");
+ +            System.IO.File.Delete("T2Alt.wav");
+ +            System.IO.File.Delete("T3Alt.wav");
+ +            System.IO.File.Delete("T4Alt.wav");
+ +            System.IO.File.Delete("T1AltTemp.wav");
+ +            System.IO.File.Delete("T2AltTemp.wav");
+ +            System.IO.File.Delete("T3AltTemp.wav");
+ +            System.IO.File.Delete("T4AltTemp.wav");
+ +       }
+ +
+ +        private void Form1_Load(object sender, EventArgs e)
+ +        {
+ +
+ +        }
+ +
+ +      
+ +
+ +}}
+ +
